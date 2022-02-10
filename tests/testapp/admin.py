@@ -184,6 +184,7 @@ class CustomAdmin(admin.ModelAdmin):
         css = {'all': ('custom.css',)}
 
     def get_list_filter(self, request):
+        print(request.user.username)
         if request.user.username == BASIC_USERNAME:
             return self.list_filter
         elif request.user.username == SHORTCUT_USERNAME:
@@ -275,7 +276,7 @@ class PersonAdmin(CustomAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('foods_that_are_favorites/',
-                 self.admin_site.admin_view(FoodsThatAreFavorites.as_view(model_admin=self)),
+                 self.admin_site.admin_view(FoodsThatAreFavorites(model_admin=self)),
                  name='foods_that_are_favorites'),
         ]
         return custom_urls + urls
